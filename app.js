@@ -1,16 +1,24 @@
 import express from 'express';
-import { PORT } from './config/env.js';
+import { PORT, NODE_ENV } from './config/env.js';
+import authRouter from './routes/auth.routes.js';
+import userRouter from './routes/user.routes.js';
+import subscriptionRouter from './routes/subscription.routes.js';
+import connectDB from './database/mongodb.js';
 
 const app = express();
 
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/subscriptions', subscriptionRouter);
+ 
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(PORT, async () => {
+  await connectDB();
+  console.log(`Server is running on port ${PORT} in ${NODE_ENV} mode`);
 });
-
 
 
 export default app;
