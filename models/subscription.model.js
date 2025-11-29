@@ -52,7 +52,6 @@ startDate:{
 },
 renewalDate:{
   type: Date,
-  required: [true, 'Renewal Date is required'],
   validate: {
     validator: function(renewalDate) {
       return renewalDate > this.startDate;
@@ -68,6 +67,22 @@ renewalDate:{
 },  
 }, {timestamps: true});
 
-const Subscription = mongoose.model('Subscription', subscriptionSchema);
+subscriptionSchema.pre('save', function(next) {
+
+  if(!this.renewalDate) {
+    const renewalperiod ={
+      Daily: 1,
+      Weekly: 7,
+      Monthly: 30,
+      Yearly: 365,
+    };
+    this.renewalDate = new Date(this.startDate);
+    this.renewalDate.setDate(this.renewalDate.getDate() + renewalperiod[this.frequency]);
+  }
+  if(this.renewalDate < new Date()) {
+    this.status = 'Inactive';
+  }
+  next();
+});
 
 export default Subscription;
