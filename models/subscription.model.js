@@ -58,17 +58,16 @@ renewalDate:{
     },
     message: 'Renewal Date must be in the future',
   },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: [true, 'User is required'],
-    index: true,
-  }
-},  
+},
+user: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'User',
+  required: [true, 'User is required'],
+  index: true,
+}
 }, {timestamps: true});
 
-subscriptionSchema.pre('save', function(next) {
-
+subscriptionSchema.pre('save', function() {
   if(!this.renewalDate) {
     const renewalperiod ={
       Daily: 1,
@@ -82,7 +81,8 @@ subscriptionSchema.pre('save', function(next) {
   if(this.renewalDate < new Date()) {
     this.status = 'Inactive';
   }
-  next();
 });
+
+const Subscription = mongoose.model('Subscription', subscriptionSchema);
 
 export default Subscription;

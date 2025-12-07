@@ -7,7 +7,16 @@ export class ErrorResponse extends Error {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 const errorMiddleware = (err, req, res, next) => {
+  // If response already sent, don't try to send another response
+  if (res.headersSent) {
+    return;
+  }
+
+  // Log the error for debugging
+  console.error('Error caught by middleware:', err);
+
   let error = { ...err };
 
   error.message = err.message || 'Internal Server Error';
