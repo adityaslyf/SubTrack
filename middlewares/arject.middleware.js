@@ -3,9 +3,9 @@ import { NODE_ENV } from '../config/env.js';
 
 const arjectMiddleware = async (req, res, next) => {
   try {
-    const result = await aj.protect(req, {resquested: 1});
+    const result = await aj.protect(req, {requested: 1});
     
-    // In development/DRY_RUN mode, log but don't block
+    // DRY_RUN in development = logs but doesn't block
     const isDevelopment = NODE_ENV !== 'production';
     
     if(result.isDenied && !isDevelopment){
