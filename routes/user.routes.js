@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { getAllUsers } from '../controllers/user.controller.js';
-import { getUserById } from '../controllers/user.controller.js';
+import { getAllUsers,getUserById} from '../controllers/user.controller.js';
+import authorize from '../middlewares/auth.middleware.js';
 
 const userRouter = Router();
 
 userRouter.get('/',(req, res, next) => {
   getAllUsers(req, res, next);
 });
-userRouter.get('/:id',(req, res, next) => {
+userRouter.get('/:id', authorize, (req, res, next) => {
   getUserById(req, res, next);
 });
 
