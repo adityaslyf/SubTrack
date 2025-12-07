@@ -27,14 +27,8 @@ const userschema = new mongoose.Schema({
   password:{
     type: String,
     required: [true, 'Password is required'],
-    minlength: [8, 'Password must be at least 8 characters long'],
-    maxlength: [50, 'Password must be less than 50 characters long'],
-    validate: {
-      validator: function(password) {
-        return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
-      },
-      message: 'Invalid password',
-    },
+    maxlength: [200, 'Password must be less than 200 characters long'],
+    select: false, // Exclude password from queries by default
   },
 }, {timestamps: true});
 
