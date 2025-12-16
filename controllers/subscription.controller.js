@@ -1,4 +1,5 @@
 import Subscription from '../models/subscription.model.js';
+import { ErrorResponse } from '../middlewares/error.middleware.js';
 
 export const createSubscription = async (req, res, next) => {
   try {
@@ -18,8 +19,16 @@ export const createSubscription = async (req, res, next) => {
 
 export const getSubscriptions = async (req, res, next) => {
   try {
-    const subscriptions = await Subscription.find();
-    res.status(200).json(subscriptions);
+    // Check if the authenticated user is requesting their own subscriptions
+    if(req.user._id.toString() !== req.params.id) {
+      return next(new ErrorResponse('You are not authorized to access this resource', 401));
+    }
+    const subscriptions = await Subscription.find({ user: req.params.id });
+    res.status(200).json({
+      success: true,
+      message: 'Subscriptions fetched successfully',
+      data: subscriptions,
+    });
   } catch (error) {
     next(error);
   }

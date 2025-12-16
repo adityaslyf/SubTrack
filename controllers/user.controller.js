@@ -1,5 +1,5 @@
 import User from '../models/user.model.js';
-import { ErrorResponse } from '../middlewares/errror.middleware.js';
+import { ErrorResponse } from '../middlewares/error.middleware.js';
 
 export const getAllUsers = async (req, res, next) => {
   try {

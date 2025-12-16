@@ -1,7 +1,7 @@
-import aj from '../config/arject.js';
+import aj from '../config/arcjet.js';
 import { NODE_ENV } from '../config/env.js';
 
-const arjectMiddleware = async (req, res, next) => {
+const arcjetMiddleware = async (req, res, next) => {
   try {
     const result = await aj.protect(req, {requested: 1});
     
@@ -31,4 +31,4 @@ const arjectMiddleware = async (req, res, next) => {
   }
 };
 
-export default arjectMiddleware;
+export default arcjetMiddleware;

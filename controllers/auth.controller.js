@@ -3,7 +3,7 @@ import User from '../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET, JWT_EXPIRE_IN } from '../config/env.js';
-import { ErrorResponse } from '../middlewares/errror.middleware.js';
+import { ErrorResponse } from '../middlewares/error.middleware.js';
 
 export const signup = async (req, res, next) => {
   const session = await mongoose.startSession();
@@ -79,7 +79,7 @@ export const signin = async (req, res, next) => {
     if (!isMatch) {
       return next(new ErrorResponse('Invalid email or password', 401));
     }
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRE_IN });
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRE_IN });
     res.status(200).json({ message: 'Signin successful', token });
   } catch (error) {
     next(error);
